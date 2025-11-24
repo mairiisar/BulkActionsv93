@@ -148,7 +148,7 @@
       },
       "dependsOn": [
         {
-          "projects": ["qer", "aad", "aob", "apc", "att", "cpl", "hds", "olg", "pol", "qam", "rmb", "rms", "rps", "sac", "tsb"],
+          "projects": ["qer", "aad", "aob", "apc", "att", "cpl", "hds", "olg", "pol", "qam", "rmb", "rms", "rps", "sac", "tsb","bulk-actions"],
           "target": "build"
         }
       ],

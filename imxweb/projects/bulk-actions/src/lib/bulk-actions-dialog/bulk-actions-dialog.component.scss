@@ -1,0 +1,61 @@
+.dialog-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-header h2 {
+  font-size: xx-large;
+  font-weight: 500 !important;
+  margin-top: 30px;
+}
+
+.mat-mdc-progress-bar {
+  --mdc-linear-progress-active-indicator-color: slategrey !important;
+  --mdc-linear-progress-track-color: lightgrey !important;
+}
+
+.dialog-subtitle {
+  font-size: large;
+  margin-top: 5px;
+}
+
+.warning {
+  color: red;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+.line-break {
+  white-space: pre-line;
+  line-height: 1.2;
+}
+
+.harderror {
+  font-size: large;
+}
+
+.mat-mdc-button.mat-primary {
+  --mdc-text-button-label-text-color: green !important;
+  --mat-text-button-state-layer-color: green !important;
+}
+
+.validation-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.align-end {
+  margin-left: auto;
+}

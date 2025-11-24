@@ -1,0 +1,141 @@
+<ng-container *ngIf="functionObjectsCount > 0">
+  <h2 class="mat-headline-5">{{ '#LDS#Bulk Actions' | translate }}</h2>
+  <eui-alert
+    *ngIf="!fileLoaded && dbExceptions.length === 0"
+    class="imx-helper-alert"
+    type="info"
+    [condensed]="true"
+    [colored]="true"
+    [dismissable]="true"
+  >
+    <span>{{ '#LDS#Drag & drop or upload a CSV file.' | translate }}</span>
+  </eui-alert>
+
+  <eui-alert
+    *ngIf="fileLoaded && numberOfErrors === 0 && (!allRowsValidated || processing || initializing) && dbExceptions.length === 0"
+    class="imx-helper-alert"
+    type="warning"
+    [condensed]="true"
+    [colored]="true"
+    [dismissable]="true"
+  >
+    <span>{{ '#LDS#Select a function and Validate your CSV data.' | translate }}</span>
+  </eui-alert>
+  <eui-alert *ngIf="dbExceptions.length > 0" class="imx-helper-alert" type="error" [condensed]="true" [colored]="true" [dismissable]="true">
+    <span *ngFor="let exception of dbExceptions">{{ exception | translate }}</span>
+  </eui-alert>
+
+  <div class="flex-container">
+    <eui-search
+      class="search-width"
+      [placeholder]="'#LDS#Search' | translate"
+      [searchControl]="searchControl"
+      [disabled]="!fileLoaded"
+      width="100%"
+    ></eui-search>
+    <eui-select
+      class="select-wrapper"
+      [(ngModel)]="selectedOptionKey"
+      placeholder="{{ '#LDS#Select a Function' | translate }}"
+      [multiple]="false"
+      [filterFunction]="filter"
+      [inputControl]="selectedOptionKeyControl"
+      [options]="functionOptions"
+      [hideClearButton]="true"
+      [disabled]="(allRowsValidated || loadingValidation || loadingImport) && hardError.length === 0"
+    >
+    </eui-select>
+  </div>
+
+  <input class="imx-hidden-element" id="csv-file" type="file" (change)="onFileChange($event)" accept=".csv" />
+
+  <div *ngIf="!fileLoaded" class="preview-window" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+    <div for="file" class="imx-no-results" (click)="triggerFileUpload()">
+      <eui-icon [icon]="noDataIcon"></eui-icon>
+      <p>{{ '#LDS#Drag and drop a CSV file here' | translate }}</p>
+      <p>{{ '#LDS#or click to browse.' | translate }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="fileLoaded" class="scrollable-table">
+    <table mat-table [dataSource]="csvDataSource">
+      <ng-container *ngFor="let header of headers; let colIndex = index" matColumnDef="{{ header }}">
+        <th mat-header-cell *matHeaderCellDef>{{ header }}</th>
+        <td mat-cell *matCellDef="let row; let rowIndex = index">
+          {{ row[colIndex] }}
+          <span
+            class="validation-result"
+            *ngIf="getValidationResult(rowIndex, colIndex)"
+            [class.error]="isValidationError(rowIndex, colIndex)"
+          >
+            {{ getValidationResult(rowIndex, colIndex) ?? '' | translate }}
+          </span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="headers; sticky: true"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: headers; let rowIndex = index"
+        [class.not-show]="numberOfErrors > 0 && !isRowError(rowIndex) && ShowErrors && !cancelCheck"
+        [class.error-row]="isRowError(rowIndex)"
+      ></tr>
+    </table>
+  </div>
+  <mat-paginator #paginator [pageSizeOptions]="[20, 100, 200]" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
+
+  <div class="button-bar">
+    <mat-slide-toggle
+      class="toggle-errors"
+      [color]="ShowErrors ? 'warn' : 'warn'"
+      [checked]="ShowErrors"
+      [disabled]="processing || initializing || !fileLoaded || loadingValidation || numberOfErrors === 0 || cancelCheck"
+      (change)="toggleErrors()"
+    >
+      {{ '#LDS#Show Errors' | translate }}
+    </mat-slide-toggle>
+
+    <button
+      mat-raised-button
+      color="accent"
+      class="export-errors-btn"
+      *ngIf="report?.ErrorRows?.length"
+      [disabled]="loadingValidation || loadingImport || processing || initializing"
+      (click)="exportErrorRows()"
+    >
+      {{ '#LDS#Export Error Rows' | translate }}
+    </button>
+
+    <button mat-raised-button color="accent" [disabled]="selectedOptionKey === null" (click)="onExport(selectedOptionKey ?? '')">
+      {{ '#LDS#CSV Example' | translate }}
+    </button>
+
+    <button mat-raised-button [disabled]="!fileLoaded || loadingValidation || loadingImport" color="warn" (click)="removeCsv()">
+      {{ '#LDS#Remove CSV' | translate }}
+    </button>
+    <button
+      mat-raised-button
+      [disabled]="!fileLoaded || selectedOptionKey === null || loadingValidation || loadingImport"
+      color="accent"
+      (click)="onValidate(selectedOptionKey ?? '')"
+    >
+      {{ '#LDS#Validate' | translate }}
+    </button>
+    <button
+      mat-raised-button
+      [disabled]="
+        !allRowsValidated ||
+        processing ||
+        initializing ||
+        !fileLoaded ||
+        loadingValidation ||
+        loadingImport ||
+        cancelCheck ||
+        hardError.length > 0
+      "
+      color="primary"
+      (click)="onSubmit(selectedOptionKey ?? '')"
+    >
+      {{ '#LDS#Import Data' | translate }}
+    </button>
+  </div>
+</ng-container>

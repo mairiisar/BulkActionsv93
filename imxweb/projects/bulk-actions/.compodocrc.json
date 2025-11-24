@@ -1,0 +1,12 @@
+{
+  "name": "IMX Web - bulk-actions Library",
+  "output": "../../documentation/v93/bulk-actions",
+  "theme": "material",
+  "assetsFolder": "../../compodoc/assets",
+  "customLogo": "../../compodoc/assets/images/oneidentity-logo.png",
+  "customFavicon": "../../compodoc/assets/images/favicon.ico",
+  "serve": false,
+  "watch": false,
+  "coverageTest": 0,
+  "disableCoverage": true
+}

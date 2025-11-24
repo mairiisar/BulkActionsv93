@@ -1,0 +1,140 @@
+<ng-container *ngIf="data.progressData$ | async as progress">
+  <ng-container *ngIf="progress.preActionMsg?.permission; else actionNotAllowed">
+    <ng-container *ngIf="progress.loadingValidation || progress.loadingImport || progress.validateDialog">
+      <div class="dialog-header">
+        <h2 mat-dialog-title *ngIf="progress.loadingValidation">
+          {{ '#LDS#Validating...' | translate }}
+        </h2>
+        <h2 mat-dialog-title *ngIf="progress.loadingImport">
+          {{ '#LDS#Importing...' | translate }}
+        </h2>
+        <div mat-dialog-content *ngIf="progress.loadingValidation || progress.loadingImport">
+          <p class="dialog-subtitle warning">{{ '#LDS#Please do not close the browser' | translate }}</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container
+      *ngIf="
+        progress.fileLoaded &&
+        progress.allRowsValidated &&
+        !progress.processing &&
+        !progress.initializing &&
+        !progress.hardError.length &&
+        progress.numberOfErrors === 0
+      "
+    >
+      <div class="dialog-header">
+        <h2 mat-dialog-title class="success">
+          {{ '#LDS#Successful Validation!' | translate }}
+        </h2>
+        <div mat-dialog-content>
+          <p class="dialog-subtitle">{{ '#LDS#You can proceed with the data import' | translate }}</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container
+      *ngIf="progress.fileLoaded && progress.allImported && !progress.allRowsValidated && !progress.importError && !progress.importRowError"
+    >
+      <div class="dialog-header">
+        <h2 mat-dialog-title class="success">
+          {{ '#LDS#Successful Import!' | translate }}
+        </h2>
+        <div mat-dialog-content>
+          <p class="dialog-subtitle">{{ '#LDS#Import procedure completed' | translate }}</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!progress.importRowError && !progress.importTotalError">
+      <ng-container
+        *ngIf="
+          (!progress.processing && !progress.initializing && progress.numberOfErrors > 0) ||
+          progress.hardError.length ||
+          progress.importError
+        "
+      >
+        <div class="dialog-header">
+          <h2 mat-dialog-title class="error">
+            {{ '#LDS#Validation Error!' | translate }}
+          </h2>
+          <div mat-dialog-content>
+            <p *ngIf="!progress.hardError.length && !progress.importError" class="dialog-subtitle warning">
+              {{ '#LDS#You have' | translate }}
+              <span>{{ progress.numberOfErrors }}</span>
+              {{ '#LDS#errors in the CSV' | translate }}
+            </p>
+            <p *ngIf="progress.hardError.length && !progress.importError" class="line-break">
+              {{ progress.hardError || '' | translate }}
+            </p>
+            <p *ngIf="!progress.hardError.length && progress.importError" class="line-break">
+              {{ progress.importErrorMsg || '' | translate }}
+            </p>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="progress.importTotalError">
+      <ng-container
+        *ngIf="
+          (!progress.processing && !progress.initializing && progress.numberOfErrors > 0) ||
+          progress.hardError.length ||
+          progress.importError
+        "
+      >
+        <div class="dialog-header">
+          <h2 mat-dialog-title class="success">
+            {{ '#LDS#Import completed with errors' | translate }}
+          </h2>
+          <div mat-dialog-content>
+            <p class="dialog-subtitle">
+              {{ progress.endActionMsg?.message || '' | translate }}
+            </p>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <div mat-dialog-content>
+      <p class="validation-details">
+        <span>{{ '#LDS#Estimated remaining time:' | translate }} {{ progress.estimatedRemainingTime }}</span>
+        <span class="align-end">{{ progress.processedRows }} {{ '#LDS#of' | translate }} {{ progress.totalRows }}</span>
+      </p>
+      <mat-progress-bar mode="determinate" [value]="progress.progress"></mat-progress-bar>
+      <p *ngIf="!progress.importError && progress.processing" class="line-break">
+        {{ progress.preActionMsg?.message || '' | translate }}
+      </p>
+      <p *ngIf="!progress.importError && !progress.processing" class="line-break">
+        {{ progress.endActionMsg?.message || '' | translate }}
+      </p>
+    </div>
+
+    <div mat-dialog-actions class="button-wrapper">
+      <button [disabled]="!progress.processing" mat-button color="warn" (click)="onClose()">
+        {{ '#LDS#Cancel' | translate }}
+      </button>
+      <button [disabled]="progress.processing" mat-button color="primary" (click)="onClose()">
+        {{ '#LDS#OK' | translate }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #actionNotAllowed>
+    <div class="dialog-header">
+      <h2 mat-dialog-title class="warning">
+        {{ '#LDS#Action not allowed' | translate }}
+      </h2>
+      <div mat-dialog-content>
+        <p class="line-break harderror">
+          {{ progress.preActionMsg?.message || '' | translate }}
+        </p>
+      </div>
+    </div>
+    <div mat-dialog-actions align="end">
+      <button type="button" mat-button color="warn" (click)="onClose()">
+        {{ '#LDS#Cancel' | translate }}
+      </button>
+    </div>
+  </ng-template>
+</ng-container>

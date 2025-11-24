@@ -32,7 +32,9 @@
       "rps": ["dist/rps"],
       "rps/*": ["dist/rps/*"],
       "tsb": ["dist/tsb"],
-      "tsb/*": ["dist/tsb/*"]
+      "tsb/*": ["dist/tsb/*"],
+      "bulk-actions": ["dist/bulk-actions"],
+      "bulk-actions/*": ["dist/bulk-actions/*"]
     },
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,

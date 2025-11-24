@@ -1,0 +1,64 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "bulk-actions",
+  "sourceRoot": "projects/bulk-actions/src",
+  "implicitDependencies": ["qer"],
+  "projectType": "library",
+  "prefix": "imx",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:ng-packagr",
+      "options": {
+        "tsConfig": "projects/bulk-actions/tsconfig.lib.json",
+        "project": "projects/bulk-actions/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "projects/bulk-actions/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "projects/bulk-actions/tsconfig.lib.json"
+        },
+        "dynamic": {
+          "project": "projects/bulk-actions/ng-package.dynamic.json"
+        },
+        "remote-dev": {
+          "tsConfig": "projects/bulk-actions/tsconfig.lib.json"
+        },
+        "remote-qs": {
+          "tsConfig": "projects/bulk-actions/tsconfig.lib.json"
+        }
+      },
+      "outputs": ["{workspaceRoot}/dist/bulk-actions"]
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "projects/bulk-actions/src/test.ts",
+        "tsConfig": "projects/bulk-actions/tsconfig.spec.json",
+        "karmaConfig": "projects/bulk-actions/karma.conf.js",
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "./shared/assets",
+            "./shared/scss",
+            "./node_modules",
+            "./node_modules/@elemental-ui/cadence-icon",
+            "./node_modules/@elemental-ui/core"
+          ]
+        }
+      }
+    },
+    "lint": {
+      "executor": "@angular-devkit/build-angular:tslint",
+      "options": {
+        "tsConfig": ["projects/bulk-actions/tsconfig.lib.json", "projects/bulk-actions/tsconfig.spec.json"],
+        "exclude": ["**/node_modules/**", "**/*.spec.ts", "**/*.json"]
+      }
+    }
+  }
+}
