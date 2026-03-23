@@ -47,7 +47,7 @@
     "doc": "Runs the build-doc.js script against <projects> to apply compodoc to any given project. e.g. npm run doc <project1> <project2>"
   },
   "dependencies": {
-    "@angular/animations": "18.2.13",
+    "@angular/animations": "18.2.14",
     "@angular/cdk": "18.2.14",
     "@angular/common": "18.2.13",
     "@angular/compiler": "18.2.13",
