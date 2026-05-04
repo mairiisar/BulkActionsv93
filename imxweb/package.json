@@ -60,7 +60,7 @@
     "@angular/router": "18.2.13",
     "@ngx-translate/core": "15.0.0",
     "@ngx-translate/http-loader": "8.0.0",
-    "billboard.js": "3.16.0",
+    "billboard.js": "3.18.0",
     "core-js": "3.39.0",
     "cytoscape": "3.33.1",
     "cytoscape-edgehandles": "4.0.1",
