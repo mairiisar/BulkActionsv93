@@ -57,7 +57,7 @@
     "@angular/material-moment-adapter": "18.2.14",
     "@angular/platform-browser": "18.2.13",
     "@angular/platform-browser-dynamic": "18.2.13",
-    "@angular/router": "18.2.13",
+    "@angular/router": "18.2.14",
     "@ngx-translate/core": "15.0.0",
     "@ngx-translate/http-loader": "8.0.0",
     "billboard.js": "3.16.0",
