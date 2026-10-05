@@ -124,7 +124,7 @@
     "karma-viewport": "1.0.9",
     "ng-mocks": "14.13.1",
     "ng-packagr": "18.2.1",
-    "prettier": "3.3.2",
+    "prettier": "3.9.9",
     "terser": "5.43.1",
     "ts-node": "10.9.2",
     "typescript": "5.5.4"
